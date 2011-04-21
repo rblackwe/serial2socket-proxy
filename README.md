@@ -12,7 +12,16 @@ For example, you can control an Arduino board connected to the serial port from 
 Requeriments
 ------------
 
-### If you want to use the source code in processing, you need:
+### If you want to execute as application, download binaries for your platform version:
+
+* [serial2socket-proxy v0.1 for Windows 64bits (binaries and source)] (https://github.com/downloads/kalanda/serial2socket-proxy/serial2socket-proxy.0.1.windows64.zip)
+* [serial2socket-proxy v0.1 for Windows 32bits (binaries and source)] (https://github.com/downloads/kalanda/serial2socket-proxy/serial2socket-proxy.0.1.windows32.zip)
+* [serial2socket-proxy v0.1 for Mac OSX 64bits (binaries and source)] (https://github.com/downloads/kalanda/serial2socket-proxy/serial2socket-proxy.0.1.macosx.zip)
+* [serial2socket-proxy v0.1 for Linux 32bits (binaries and source)] (https://github.com/downloads/kalanda/serial2socket-proxy/serial2socket-proxy.0.1.windows32.zip)
+* [serial2socket-proxy v0.1 for Linux 64bits (binaries and source)] (https://github.com/downloads/kalanda/serial2socket-proxy/serial2socket-proxy.0.1.windows64.zip)
+
+
+### If you also want to open and execute the source code in Processing, you need to download and install:
 
 * [Processing programming environment] (http://processing.org/download/)
 * [ControlP5 - A GUI (graphical user interface) library for processing] (http://www.sojamo.de/libraries/controlP5/#installation)

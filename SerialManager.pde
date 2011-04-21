@@ -86,9 +86,9 @@
     } 
   }
   
-  public void checkForSerialData(){
+  public void checkForSerialData(Serial thePort){
   
-    if(isConnected){
+    if(isConnected && thePort==serialPort){
           while (serialPort.available() > 0) {
             String whatSerialSaid = serialPort.readString();
             serverManager.send(whatSerialSaid);

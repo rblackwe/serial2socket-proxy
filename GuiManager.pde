@@ -198,9 +198,10 @@
            break; 
       
       case ID_CREATE_SERVER_BUTTON :
-           int socketPort = int(socketPortTextfield.getText());
+           
            if(serialPortsCombo.value()==0) { logActivity("> Please, select a serial port"); break; }
            if(serialSpeedsCombo.value()==0) { logActivity("> Please, select a serial speed"); break; }
+           int socketPort = int(socketPortTextfield.getText());
            if(!(socketPort>=2 && socketPort<=65535)) { logActivity("> Please, set a server port number between 2 and 65535"); break; }
            serverManager.createServer(socketPort);  
            serialManager.connectToSerialPort(serialPortsCombo.stringValue(),serialSpeedsCombo.stringValue());

@@ -30,10 +30,10 @@ ServerManager serverManager;
 // Setup core applet
 void setup(){
 
-  // Create serial manager and start
+  // Create serial manager
   serialManager = new SerialManager(this);
   
-  // Create server manager and start
+  // Create server manager
   serverManager = new ServerManager(this);
   
   // Create gui manager  
@@ -44,13 +44,12 @@ void setup(){
 // Draw method
 void draw(){
   guiManager.draw();
+  serverManager.checkForClientData();
 }
 
-// Quit the thread when applet stops
-public void stop() {
- serialManager.quit();
- serverManager.quit();
- super.stop(); 
+// Catch for serial data
+void serialEvent(Serial serialPort){
+  serialManager.checkForSerialData(serialPort); 
 }
 
 // For catch new clients

@@ -19,14 +19,10 @@
  * along with serial2socket-proxy.  If not, see <http://www.gnu.org/licenses/>.
  */
  
- public class ServerManager extends Thread {
+ public class ServerManager {
 
   //Constants
   final static int DEFAULT_PORT = 8080;  
-  
-  // Thread control vars 
-  private boolean isRunning;          
-  private int waitInterval; 
   
   // Parent PApplet   
   private PApplet parent;  
@@ -35,33 +31,37 @@
   private Server theServer;
   private int serverPortNumber;
   private Client theClient;
+  private boolean isServerRunning;
 
   // Constructor
   public ServerManager(PApplet parent) {  
-    super();
     this.parent = parent;
-    waitInterval = 100;
-    isRunning = false;
     serverPortNumber = DEFAULT_PORT;
-    start();
+    isServerRunning = false;
   }
 
   // Create the server
   public void createServer(int portNumber) {
 
-    if(theServer!=null) {
-      guiManager.logActivity("Removing server at port "+serverPortNumber);
-      if(theClient!=null) theServer.disconnect(theClient);
-      theClient = null;
-      theServer.stop();
-      theServer = null;
-      
+    if(theServer!=null) {     
+      try {
+        isServerRunning = false;
+        guiManager.logActivity("Removing server at port "+serverPortNumber);
+        if(theClient!=null) theServer.disconnect(theClient);
+        theClient = null;
+        theServer.stop();
+        theServer = null;
+      } 
+      catch(Exception e) {
+        guiManager.logActivity("> "+e.getMessage());
+      }    
     }
     serverPortNumber = portNumber;
     
     try {
       theServer = new Server(parent, serverPortNumber);
       guiManager.logActivity("Server is listening port "+serverPortNumber);
+      isServerRunning = true;
     } 
     catch(Exception e) {
       guiManager.logActivity("> Error creating server at port "+serverPortNumber);
@@ -72,18 +72,20 @@
 
   // Sends data to all clients
   void send(String data) {
-    if(theServer!=null) {
+    if(isServerRunning) {
       theServer.write(data);
     }
   }
   
   // Check if new data from client is available
   public void checkForClientData(){
-    if(theClient!=null){
-       String whatClientSaid = theClient.readString();
-      if (whatClientSaid != null) {
-        if(serialManager.send(whatClientSaid)==-1) guiManager.logActivity(">> Client is sending data but not serial port is connected");
-      } 
+    if(isServerRunning){
+      if(theClient!=null){
+         String whatClientSaid = theClient.readString();
+        if (whatClientSaid != null) {
+          if(serialManager.send(whatClientSaid)==-1) guiManager.logActivity(">> Client is sending data but not serial port is connected");
+        } 
+      }
     }
   }
 
@@ -104,33 +106,6 @@
         theServer.disconnect(someClient);
       } 
     }
-  }
-    
-  // Start method for thread
-  public void start () {
-    isRunning = true;
-    super.start();
-  }
-  
-  // Run method for thread
-  public void run(){
-     
-    while (isRunning) {
-     
-      // Method to execute in every run
-      checkForClientData();
-      
-      try {
-        sleep((long)(waitInterval));
-      } catch (Exception e) {
-      }
-    }
-  }
-  
-  // Our method that quits the thread
-  void quit() {
-    isRunning = false;
-    interrupt();
   }
 } 
 
